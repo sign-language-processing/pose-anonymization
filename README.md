@@ -36,10 +36,10 @@ anonymized_pose = remove_appearance(pose)
 
 Currently implemented in this repository.
 
-Using the mean and standard deviation of sign language poses calculated by
+Using the mean of sign language poses calculated by
 [`sign-language-processing/sign-vq`](https://github.com/sign-language-processing/sign-vq),
 we can anonymize a pose sequence by assuming the first frame is only the appearance of the person,
-and remove it from the rest of the frames.
+and remove it from the rest of the frames, then add the mean.
 
 (Example generated using `./scripts/create_example.sh`, transferred to `assets/example/interpreter.pose`)
 

@@ -8,8 +8,7 @@ authors = [
 readme = "README.md"
 dependencies = [
     "pose-format",
-    "sign_vq @ git+https://github.com/sign-language-processing/sign-vq"
-
+    # "sign_vq @ git+https://github.com/sign-language-processing/sign-vq" # For pose anonymization, not transfer
 ]
 
 [project.optional-dependencies]

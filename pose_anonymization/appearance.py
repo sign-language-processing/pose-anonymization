@@ -1,6 +1,6 @@
 import numpy as np
 from pose_format import Pose
-from sign_vq.data.normalize import pre_process_mediapipe, normalize_mean_std, unnormalize_mean_std, unshift_hand
+from pose_format.utils.generic import reduce_holistic, correct_wrists, pose_normalization_info
 
 
 def normalize_pose_size(pose: Pose):
@@ -11,9 +11,17 @@ def normalize_pose_size(pose: Pose):
     pose.header.dimensions.height = pose.header.dimensions.width = int(new_width * shift * 2)
 
 
+def reduce_pose(pose: Pose):
+    # Remove legs, simplify face
+    pose = reduce_holistic(pose)
+    # Align hand wrists with body wrists
+    correct_wrists(pose)
+    # Adjust pose based on shoulder positions
+    return pose.normalize(pose_normalization_info(pose.header))
+
+
 def get_pose_apperance(pose: Pose, include_end_frame=False):
-    pose = pre_process_mediapipe(pose)
-    pose = normalize_mean_std(pose)
+    pose = reduce_pose(pose)
 
     if include_end_frame:
         # Assuming the first and last frames are indicative of the signer's appearance
@@ -46,10 +54,6 @@ def change_appearace(pose: Pose, appearance: np.ndarray):
 
     pose.body.data = new_pose_data
 
-    pose = unnormalize_mean_std(pose)
-    for component in hand_components:
-        unshift_hand(pose, component)
-
     normalize_pose_size(pose)
 
     return pose
@@ -57,7 +61,11 @@ def change_appearace(pose: Pose, appearance: np.ndarray):
 
 def remove_appearance(pose: Pose, include_end_frame=False):
     pose, appearance = get_pose_apperance(pose, include_end_frame)
-    return change_appearace(pose, appearance)
+    # pylint: disable=import-outside-toplevel
+    from sign_vq.data.normalize import load_mean_and_std
+    mean, _ = load_mean_and_std()
+
+    return change_appearace(pose, appearance - mean)
 
 
 def transfer_appearance(pose: Pose, appearance_pose: Pose, include_end_frame=False):

@@ -69,7 +69,7 @@ Pipeline approach:
   can be used to transcribe the individual signs into SignWriting.
 - [`sign-language-processing/signwriting-animation`](https://github.com/sign-language-processing/signwriting-animation)
   can be used to animate the SignWriting back into poses.
-- [`sign-language-processing/fluent_pose_synthesis`](https://github.com/sign-language-processing/fluent-pose-synthesis)
+- [`sign-language-processing/fluent-pose-synthesis`](https://github.com/sign-language-processing/fluent-pose-synthesis)
   can be used to synthesize fluent utterances from the anonymized poses.
 
 This pipeline guarantees anonymization from an information theoretic perspective, as the only information that is

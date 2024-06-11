@@ -85,3 +85,11 @@ preserved is the choice of signs.
     year={2024}
 }
 ```
+
+
+| Sign   | Original                                   | Anonymized                                     | Transferred                                      |
+|--------|--------------------------------------------|------------------------------------------------|--------------------------------------------------| 
+| Kleine | ![kleine](figures/example/original/kleine.png) | ![kleine](figures/example/anonymized/kleine.png) | ![kleine](figures/example/interpreter/kleine.png) |
+| Kinder | ![kinder](figures/example/original/kinder.png) | ![kinder](figures/example/anonymized/kinder.png) | ![kinder](figures/example/interpreter/kinder.png) |
+| Essen  | ![essen](figures/example/original/essen.png) | ![essen](figures/example/anonymized/essen.png)  | ![essen](figures/example/interpreter/essen.png)   |
+| Pizza  | ![pizza](figures/example/original/pizza.png) | ![pizza](figures/example/anonymized/pizza.png)  | ![pizza](figures/example/interpreter/pizza.png)   |

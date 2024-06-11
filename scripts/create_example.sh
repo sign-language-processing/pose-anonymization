@@ -14,6 +14,11 @@ ffmpeg -i assets/example/original/kinder.mp4 assets/example/original/kinder.gif 
 ffmpeg -i assets/example/original/essen.mp4 assets/example/original/essen.gif -y
 ffmpeg -i assets/example/original/pizza.mp4 assets/example/original/pizza.gif -y
 
+python ./scripts/extract_middle_frame.py --pose=assets/example/original/kleine.pose --output=assets/example/original/kleine.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/original/kinder.pose --output=assets/example/original/kinder.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/original/essen.pose --output=assets/example/original/essen.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/original/pizza.pose --output=assets/example/original/pizza.png
+
 rm assets/example/original/kleine.mp4
 rm assets/example/original/kinder.mp4
 rm assets/example/original/essen.mp4
@@ -36,6 +41,11 @@ ffmpeg -i assets/example/anonymized/kinder.mp4 assets/example/anonymized/kinder.
 ffmpeg -i assets/example/anonymized/essen.mp4 assets/example/anonymized/essen.gif -y
 ffmpeg -i assets/example/anonymized/pizza.mp4 assets/example/anonymized/pizza.gif -y
 
+python ./scripts/extract_middle_frame.py --pose=assets/example/anonymized/kleine.pose --output=assets/example/anonymized/kleine.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/anonymized/kinder.pose --output=assets/example/anonymized/kinder.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/anonymized/essen.pose --output=assets/example/anonymized/essen.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/anonymized/pizza.pose --output=assets/example/anonymized/pizza.png
+
 rm assets/example/anonymized/kleine.mp4
 rm assets/example/anonymized/kinder.mp4
 rm assets/example/anonymized/essen.mp4
@@ -56,6 +66,11 @@ ffmpeg -i assets/example/interpreter/kleine.mp4 assets/example/interpreter/klein
 ffmpeg -i assets/example/interpreter/kinder.mp4 assets/example/interpreter/kinder.gif -y
 ffmpeg -i assets/example/interpreter/essen.mp4 assets/example/interpreter/essen.gif -y
 ffmpeg -i assets/example/interpreter/pizza.mp4 assets/example/interpreter/pizza.gif -y
+
+python ./scripts/extract_middle_frame.py --pose=assets/example/interpreter/kleine.pose --output=assets/example/interpreter/kleine.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/interpreter/kinder.pose --output=assets/example/interpreter/kinder.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/interpreter/essen.pose --output=assets/example/interpreter/essen.png
+python ./scripts/extract_middle_frame.py --pose=assets/example/interpreter/pizza.pose --output=assets/example/interpreter/pizza.png
 
 rm assets/example/interpreter/kleine.mp4
 rm assets/example/interpreter/kinder.mp4

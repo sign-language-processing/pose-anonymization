@@ -1,6 +1,10 @@
+from functools import lru_cache
+
 import numpy as np
 from pose_format import Pose
-from pose_format.utils.generic import reduce_holistic, correct_wrists, pose_normalization_info
+from pose_format.numpy import NumPyPoseBody
+from pose_format.utils.generic import pose_normalization_info
+from sign_vq.data.normalize import load_pose_header
 
 
 def normalize_pose_size(pose: Pose):
@@ -11,17 +15,8 @@ def normalize_pose_size(pose: Pose):
     pose.header.dimensions.height = pose.header.dimensions.width = int(new_width * shift * 2)
 
 
-def reduce_pose(pose: Pose):
-    # Remove legs, simplify face
-    pose = reduce_holistic(pose)
-    # Align hand wrists with body wrists
-    correct_wrists(pose)
-    # Adjust pose based on shoulder positions
-    return pose.normalize(pose_normalization_info(pose.header))
-
-
-def get_pose_apperance(pose: Pose, include_end_frame=False):
-    pose = reduce_pose(pose)
+def get_pose_appearance(pose: Pose, include_end_frame=False):
+    pose = pose.normalize(pose_normalization_info(pose.header))
 
     if include_end_frame:
         # Assuming the first and last frames are indicative of the signer's appearance
@@ -47,9 +42,12 @@ def change_appearace(pose: Pose, appearance: np.ndarray):
             new_pose_data[:, :, start:end] = pose.body.data[:, :, start:end]
 
     # Bring back the wrists
-    for hand in ['LEFT', 'RIGHT']:
+    body_component = next(c for c in pose.header.components if c.name == 'POSE_LANDMARKS')
+    points = [f'{hand}_{point}' for hand in ['LEFT', 'RIGHT'] for point in ['WRIST', 'PINKY', 'INDEX', 'THUMB']]
+    existing_points = [p for p in points if p in body_component.points]
+    for point in existing_points:
         # pylint: disable=protected-access
-        wrist_index = pose.header._get_point_index('POSE_LANDMARKS', f'{hand}_WRIST')
+        wrist_index = pose.header._get_point_index('POSE_LANDMARKS', point)
         new_pose_data[:, :, wrist_index] = pose.body.data[:, :, wrist_index]
 
     pose.body.data = new_pose_data
@@ -59,18 +57,36 @@ def change_appearace(pose: Pose, appearance: np.ndarray):
     return pose
 
 
-def remove_appearance(pose: Pose, include_end_frame=False):
-    pose, appearance = get_pose_apperance(pose, include_end_frame)
+@lru_cache(maxsize=1)
+def get_mean_appearance():
     # pylint: disable=import-outside-toplevel
     from sign_vq.data.normalize import load_mean_and_std
     mean, _ = load_mean_and_std()
 
-    return change_appearace(pose, appearance - mean)
+    data = mean.reshape((1, 1, -1, 3)) * 1000
+    confidence = np.ones((1, 1, len(mean)))
+    body = NumPyPoseBody(fps=1, data=data, confidence=confidence)
+    pose = Pose(header=load_pose_header(), body=body)
+
+    return pose
 
 
 def transfer_appearance(pose: Pose, appearance_pose: Pose, include_end_frame=False):
-    pose, appearance = get_pose_apperance(pose, include_end_frame)
-    _, new_appearance = get_pose_apperance(appearance_pose, include_end_frame)
+    # Making sure the appearance pose has the same components as the pose, in the same order of points
+    pose_components = [c.name for c in pose.header.components]
+    pose_components_points = {c.name: c.points for c in pose.header.components}
+    appearance_pose = appearance_pose.get_components(pose_components, pose_components_points)
+
+    assert pose.header.total_points() == appearance_pose.header.total_points(), \
+        "Appearance pose missing points"
+
+    pose, appearance = get_pose_appearance(pose, include_end_frame)
+    _, new_appearance = get_pose_appearance(appearance_pose, include_end_frame)
 
     # Switching the pose appearance
     return change_appearace(pose, appearance - new_appearance)
+
+
+def remove_appearance(pose: Pose, include_end_frame=False):
+    mean_pose = get_mean_appearance()
+    return transfer_appearance(pose, mean_pose, include_end_frame=include_end_frame)

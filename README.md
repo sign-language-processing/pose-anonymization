@@ -74,3 +74,14 @@ Pipeline approach:
 
 This pipeline guarantees anonymization from an information theoretic perspective, as the only information that is
 preserved is the choice of signs.
+
+## Citing this work
+
+```bibtex
+@misc{moryossef2024anonymization, 
+    title={pose-anonymization: Remove identifying information from sign language poses},
+    author={Moryossef, Amit},
+    howpublished={\url{https://github.com/sign-language-processing/pose-anonymization}},
+    year={2024}
+}
+```

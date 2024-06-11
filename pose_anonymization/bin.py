@@ -3,6 +3,7 @@
 import argparse
 
 from pose_format import Pose
+from pose_format.utils.generic import reduce_holistic, correct_wrists
 
 from pose_anonymization.appearance import remove_appearance, transfer_appearance
 
@@ -20,6 +21,9 @@ def main():
 
     with open(args.input, "rb") as f:
         pose = Pose.read(f.read())
+
+    pose = reduce_holistic(pose)
+    correct_wrists(pose)
 
     if args.appearance:
         with open(args.appearance, "rb") as f:

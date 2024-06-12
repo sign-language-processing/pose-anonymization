@@ -4,7 +4,6 @@ from matplotlib import pyplot as plt
 from pose_format import Pose
 from pose_format.numpy.representation.distance import DistanceRepresentation
 from pose_format.utils.optical_flow import OpticalFlowCalculator
-# pylint: disable=import-error
 from spoken_to_signed.gloss_to_pose.concatenate import concatenate_poses
 
 plt.rcParams["font.family"] = "Times New Roman"

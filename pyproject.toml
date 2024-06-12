@@ -14,7 +14,9 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest",
-    "pylint"
+    "pylint",
+    "matplotlib",
+    "spoken_to_signed @ git+https://github.com/ZurichNLP/spoken-to-signed-translation"
 ]
 
 [tool.yapf]

@@ -16,7 +16,7 @@ dev = [
     "pylint",
     "matplotlib",
     "spoken_to_signed @ git+https://github.com/ZurichNLP/spoken-to-signed-translation",
-     "sign_vq @ git+https://github.com/sign-language-processing/sign-vq" # For pose anonymization, not transfer
+    "sign_vq @ git+https://github.com/sign-language-processing/sign-vq" # For pose anonymization, not transfer
 ]
 
 [tool.yapf]

@@ -4,7 +4,6 @@ import numpy as np
 from pose_format import Pose
 from pose_format.numpy import NumPyPoseBody
 from pose_format.utils.generic import pose_normalization_info
-from sign_vq.data.normalize import load_pose_header
 
 
 def normalize_pose_size(pose: Pose):
@@ -60,7 +59,7 @@ def change_appearace(pose: Pose, appearance: np.ndarray):
 @lru_cache(maxsize=1)
 def get_mean_appearance():
     # pylint: disable=import-outside-toplevel
-    from sign_vq.data.normalize import load_mean_and_std
+    from sign_vq.data.normalize import load_mean_and_std, load_pose_header
     mean, _ = load_mean_and_std()
 
     data = mean.reshape((1, 1, -1, 3)) * 1000

@@ -15,8 +15,7 @@ dev = [
     "pytest",
     "pylint",
     "matplotlib",
-    "spoken_to_signed @ git+https://github.com/ZurichNLP/spoken-to-signed-translation",
-    "sign_vq @ git+https://github.com/sign-language-processing/sign-vq" # For pose anonymization, not transfer
+    "spoken_to_signed @ git+https://github.com/ZurichNLP/spoken-to-signed-translation"
 ]
 
 [tool.yapf]
@@ -35,6 +34,9 @@ disable = [
 packages = [
     "pose_anonymization",
 ]
+
+[tool.setuptools.package-data]
+pose_anonymization = ["**/*.json", "**/*.poseheader"]
 
 [tool.pytest.ini_options]
 addopts = "-v"

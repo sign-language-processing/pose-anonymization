@@ -33,7 +33,7 @@ disable = [
 [tool.setuptools]
 packages = [
     "pose_anonymization",
-    "pose_anonymization.data"
+    "pose_anonymization.data",
 ]
 
 [tool.setuptools.package-data]

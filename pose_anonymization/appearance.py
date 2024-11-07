@@ -6,14 +6,7 @@ from pose_format.numpy import NumPyPoseBody
 from pose_format.utils.generic import pose_normalization_info
 
 from pose_anonymization.data import load_mean_and_std, load_pose_header
-
-
-def normalize_pose_size(pose: Pose):
-    new_width = 200
-    shift = 1.25
-    shift_vec = np.full(shape=(pose.body.data.shape[-1]), fill_value=shift, dtype=np.float32)
-    pose.body.data = (pose.body.data + shift_vec) * new_width
-    pose.header.dimensions.height = pose.header.dimensions.width = int(new_width * shift * 2)
+from pose_format.utils.generic import normalize_pose_size
 
 
 def get_pose_appearance(pose: Pose, include_end_frame=False):

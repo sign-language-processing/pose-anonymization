@@ -37,7 +37,7 @@ def unshift_hands(pose: Pose):
 
 def pose_like(pose: Pose, pose_header: PoseHeader):
     component_names = [component.name for component in pose_header.components]
-    component_points = {component.name: component.points for component in pose.header.components}
+    component_points = {component.name: component.points for component in pose_header.components}
     return pose.get_components(component_names, component_points)
 
 

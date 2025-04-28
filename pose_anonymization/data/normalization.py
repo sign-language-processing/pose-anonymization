@@ -70,7 +70,7 @@ def normalize_mean_std(pose: Pose):
 
 
 def unnormalize_mean_std(pose: Pose):
-    mean, std = load_mean_and_std()
+    mean, std = load_mean_and_std_for_pose(pose)
     pose.body.data = (pose.body.data * std) + mean
     unshift_hands(pose)
     return pose

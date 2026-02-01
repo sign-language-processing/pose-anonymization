@@ -11,14 +11,14 @@ CURRENT_DIR = Path(__file__).parent
 
 
 def process_file(file, pose_header: PoseHeader):
-    with open(file, 'rb') as pose_file:
+    with open(file, "rb") as pose_file:
         pose = Pose.read(pose_file.read())
         pose = pre_process_pose(pose, pose_header=pose_header)
     tensor = pose.body.data.filled(0)
 
     frames_sum = np.sum(tensor, axis=(0, 1))
     frames_squared_sum = np.sum(np.square(tensor), axis=(0, 1))
-    unmasked_frames = pose.body.data[:, :, :, 0:1].mask == False
+    unmasked_frames = ~pose.body.data[:, :, :, 0:1].mask
     num_unmasked_frames = np.sum(unmasked_frames, axis=(0, 1))
 
     return frames_sum, frames_squared_sum, num_unmasked_frames
@@ -47,7 +47,7 @@ def main(poses_location: str):
     print(f"Processing {len(files)} files")
 
     # get a single random pose
-    with open(files[0], 'rb') as pose_file:
+    with open(files[0], "rb") as pose_file:
         pose = Pose.read(pose_file.read())
         pose = pre_process_pose(pose)
 
@@ -62,10 +62,7 @@ def main(poses_location: str):
     for component in pose.header.components:
         component_info = {}
         for point in component.points:
-            component_info[point] = {
-                "mean": mean[i].tolist(),
-                "std": std[i].tolist()
-            }
+            component_info[point] = {"mean": mean[i].tolist(), "std": std[i].tolist()}
             i += 1
         mean_std_info[component.name] = component_info
 
@@ -78,9 +75,10 @@ def main(poses_location: str):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description='Collect normalization info')
-    parser.add_argument('--dir', type=str, help='Directory containing the pose files',
-                        default="/Volumes/Echo/GCS/sign-mt-poses")
+    parser = argparse.ArgumentParser(description="Collect normalization info")
+    parser.add_argument(
+        "--dir", type=str, help="Directory containing the pose files", default="/Volumes/Echo/GCS/sign-mt-poses"
+    )
 
     args = parser.parse_args()
 

@@ -13,10 +13,7 @@ if __name__ == "__main__":
     unshift_hands(mean_pose)
     normalize_pose_size(mean_pose)
 
-    poses = {
-        "full": mean_pose,
-        "reduced": reduce_holistic(mean_pose)
-    }
+    poses = {"full": mean_pose, "reduced": reduce_holistic(mean_pose)}
     for name, pose in poses.items():
         pose.focus()
 

@@ -1,15 +1,15 @@
 from pose_format import Pose, PoseHeader
-from pose_format.utils.generic import pose_normalization_info, correct_wrists, hands_components
+from pose_format.utils.generic import correct_wrists, hands_components, pose_normalization_info
 
-from pose_anonymization.data import load_mean_and_std, load_mean_and_std_pose
+from pose_anonymization.data import load_mean_and_std_pose
 
 
 def shift_hand(pose: Pose, hand_component: str, wrist_name: str):
     # pylint: disable=protected-access
     wrist_index = pose.header._get_point_index(hand_component, wrist_name)
-    hand = pose.body.data[:, :, wrist_index: wrist_index + 21]
+    hand = pose.body.data[:, :, wrist_index : wrist_index + 21]
     wrist = hand[:, :, 0:1]
-    pose.body.data[:, :, wrist_index: wrist_index + 21] = hand - wrist
+    pose.body.data[:, :, wrist_index : wrist_index + 21] = hand - wrist
 
 
 def shift_hands(pose: Pose):
@@ -21,12 +21,12 @@ def shift_hands(pose: Pose):
 def unshift_hand(pose: Pose, hand_component: str):
     # pylint: disable=protected-access
     wrist_index = pose.header._get_point_index(hand_component, "WRIST")
-    hand = pose.body.data[:, :, wrist_index: wrist_index + 21]
+    hand = pose.body.data[:, :, wrist_index : wrist_index + 21]
     body_wrist_name = "LEFT_WRIST" if hand_component == "LEFT_HAND_LANDMARKS" else "RIGHT_WRIST"
     # pylint: disable=protected-access
     body_wrist_index = pose.header._get_point_index("POSE_LANDMARKS", body_wrist_name)
-    body_wrist = pose.body.data[:, :, body_wrist_index: body_wrist_index + 1]
-    pose.body.data[:, :, wrist_index: wrist_index + 21] = hand + body_wrist
+    body_wrist = pose.body.data[:, :, body_wrist_index : body_wrist_index + 1]
+    pose.body.data[:, :, wrist_index : wrist_index + 21] = hand + body_wrist
 
 
 def unshift_hands(pose: Pose):
@@ -58,8 +58,7 @@ def load_mean_and_std_for_pose(pose: Pose):
     mean_pose, std_pose = load_mean_and_std_pose()
     mean_pose = pose_like(mean_pose, pose.header)
     std_pose = pose_like(std_pose, pose.header)
-    return (mean_pose.body.data.reshape((-1, 3)),
-            std_pose.body.data.reshape((-1, 3)))
+    return (mean_pose.body.data.reshape((-1, 3)), std_pose.body.data.reshape((-1, 3)))
 
 
 def normalize_mean_std(pose: Pose):

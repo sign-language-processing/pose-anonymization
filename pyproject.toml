@@ -6,6 +6,7 @@ authors = [
     { name = "Amit Moryossef", email = "amitmoryossef@gmail.com" },
 ]
 readme = "README.md"
+requires-python = ">=3.9"
 dependencies = [
     "pose-format",
 ]
@@ -13,21 +14,26 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest",
-    "pylint",
+    "ruff",
     "matplotlib",
-    "spoken_to_signed @ git+https://github.com/ZurichNLP/spoken-to-signed-translation"
 ]
 
-[tool.yapf]
-based_on_style = "google"
-column_limit = 120
+[tool.ruff]
+line-length = 120
 
-[tool.pylint]
-max-line-length = 120
-disable = [
-    "C0114", # Missing module docstring
-    "C0115", # Missing class docstring
-    "C0116", # Missing function or method docstring
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "C90",  # mccabe complexity
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "PT",   # flake8-pytest-style
+    "W605", # invalid escape sequence
+    "BLE",  # flake8-blind-except
 ]
 
 [tool.setuptools]
@@ -41,7 +47,7 @@ pose_anonymization = ["**/*.json", "**/*.poseheader"]
 
 [tool.pytest.ini_options]
 addopts = "-v"
-testpaths = ["pose_anonymization"]
+testpaths = ["pose_anonymization", "tests"]
 
 [project.scripts]
 anonymize_pose = "pose_anonymization.bin:main"

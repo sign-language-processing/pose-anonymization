@@ -2,7 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
-from pose_format import PoseHeader, Pose
+from pose_format import Pose, PoseHeader
 from pose_format.numpy import NumPyPoseBody
 from pose_format.utils.reader import BufferReader
 
@@ -18,7 +18,8 @@ def load_pose_header():
 @lru_cache(maxsize=1)
 def load_mean_and_std():
     import json
-    with open(CURRENT_DIR / "pose_normalization.json", "r", encoding="utf-8") as f:
+
+    with open(CURRENT_DIR / "pose_normalization.json", encoding="utf-8") as f:
         data = json.load(f)
 
     mean, std = [], []
@@ -32,6 +33,7 @@ def load_mean_and_std():
     std[std == 0] = 1
 
     return np.array(mean), std
+
 
 @lru_cache(maxsize=1)
 def load_mean_and_std_pose():

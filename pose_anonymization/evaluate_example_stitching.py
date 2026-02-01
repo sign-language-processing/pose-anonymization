@@ -16,7 +16,7 @@ fig = plt.figure(figsize=(8, 2))
 for directory in [example_dir / "original", example_dir / "anonymized"]:
     poses = []
     for word in ["kleine", "kinder", "essen", "pizza"]:
-        with open(directory / f"{word}.pose", 'rb') as pose_file:
+        with open(directory / f"{word}.pose", "rb") as pose_file:
             poses.append(Pose.read(pose_file.read()))
 
     concatenated = concatenate_poses(poses).get_components(["FACE_LANDMARKS"])
@@ -27,7 +27,7 @@ for directory in [example_dir / "original", example_dir / "anonymized"]:
     plt.plot(flow, label=directory.name.capitalize())
 
 plt.yticks([])
-plt.legend(loc='upper left')
+plt.legend(loc="upper left")
 plt.ylabel("Optical Flow")
 plt.tight_layout()
 fig.show()
